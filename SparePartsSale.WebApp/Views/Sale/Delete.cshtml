@@ -1,0 +1,19 @@
+﻿
+@{
+    ViewData["Title"] = "DeleteSale";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper ">
+    <div class="content ">
+
+
+        <h1 class="alert alert-danger">
+            Bu melumatı silmək istəyirsinizmi?
+          
+        </h1>
+        <a href="@Url.Action("DeleteSale", "sale", new { id = ViewBag.id })" class="btn btn-danger">Yes</a>
+        <a href="@Url.Action("report", "sale")" class="btn btn-info">No</a>
+        </div>
+        </div>
+

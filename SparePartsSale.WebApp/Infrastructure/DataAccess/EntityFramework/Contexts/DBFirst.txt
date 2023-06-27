@@ -1,0 +1,2 @@
+﻿Scaffold-DbContext "Data Source=.;Initial Catalog=DB_SALE;Integrated Security=True;MultipleActiveResultSets=true"-OutputDir Infrastructure/DataAccess/Entities/Models -ContextDir Infrastructure/DataAccess/EntityFramework/Contexts -Context SaleAppDbContextBase  Microsoft.EntityFrameworkCore.SqlServer  -force 
+   optionsBuilder.UseSqlServer("Data Source=167.99.44.244;Initial Catalog=DB_TTCP;MultipleActiveResultSets=true;User ID=sa; Password=199477e");

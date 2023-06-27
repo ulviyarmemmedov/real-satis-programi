@@ -1,0 +1,172 @@
+﻿@using SparePartsSale.WebApp.Models.SaleVMs;
+@model UpdateSaleVM
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    ViewData["Title"] = "UpdateSale";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="content-wrapper ">
+    <div class="content ">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="panel panel-bd lobidrag">
+                    <div class="panel-heading">
+                        <div class="btn-group" id="buttonexport">
+                            <a href="#">
+                                <h4>Satış</h4>
+                            </a>
+                        </div>
+                    </div>
+                    @*<form asp-controller="sale" asp-action="add" method="post">*@
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Sənəd Nömrəsi</label>
+                                        <input class="form-control" type="text" asp-for="@Model.Sale.DocNo" readonly id="DocNo" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Tarix</label>
+                                        <input class="form-control" type="date" asp-for="@Model.Product[0].Date" id="Date" />
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Mağaza</label>
+                                        <select class="form-control" asp-for="@Model.Sale.PlaceId" asp-items="Model.PlaceList" id="PlaceId">
+                                        <option value="@Model.Product[0].PlaceId">@Model.Product[0].PlaceName</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label>Müştəri</label>
+                                        <select class="form-control" asp-for="@Model.Sale.CustomerId" asp-items="Model.CompanyList" id="CustomerId">
+                                        <option value="@Model.Product[0].CustomerId">@Model.Product[0].CustomerName</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Ödəmə Növü</label>
+                                        <select class="form-control" type="text" asp-for="@Model.Sale.PayType" asp-items="Model.PayTypeList" id="PayType">
+                                        <option value="@Model.Product[0].PayType">@Model.Product[0].PayTypeText</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <hr />
+                        <input type="hidden" value="@Model.Product[0].Id"  id="id"/>
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Barkod</label>
+                                        <input class="form-control" type="text" @*name="barcode"*@ id="barcode" value="@Model.Product[0].Barcode"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="form-group">
+                                        <label>Məhsul</label>
+                                    <input class="form-control" type="text" id="product" readonly value="@Model.Product[0].ProductName" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Miqdar</label>
+                                        <input class="form-control" type="text" id="quantity" onkeyup="Calc()"  value="@Model.Product[0].Quantity"/>
+                                    </div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Həcm(Litr)</label>
+                                        <input class="form-control" type="text" id="volume" onkeyup="Calc()" value="@Model.Product[0].Volume" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Qiymət</label>
+                                    <input class="form-control" type="text" id="price" readonly value="@Model.Product[0].Price" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Endirim</label>
+                                    <input class="form-control" type="text" id="discount" onkeyup="Calc()" value="@Model.Product[0].Discount" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <label>Cəmi</label>
+                                    <input class="form-control" type="text" id="total" readonly value="@Model.Product[0].Total" />
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-2">
+                                    <div class="form-group">
+                                        <br />
+                                        <button type="button" class="btn btn-success w-md m-b-5" onclick="Addline()">Əlavə Et</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="table-responsive" style="overflow-y: visible;height: 300px;">
+                                        <table class="table table-bordered table-hover" id="Saledetail">
+                                            <thead>
+                                                <tr class="info">
+                                                <th style="display:none">Row</th>
+                                                <th>Id</th>
+                                                    <th>Barkod</th>
+                                                    <th>Məhsul</th>
+                                                    <th>Miqdar</th>
+                                                    <th>Həcm(Litr)</th>
+                                                    <th>Qiymət</th>
+                                                    <th>Endirim</th>
+                                                    <th>Cəmi</th>
+                                                    <th>#</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-lg-12">
+
+                                    <button type="submit" class="btn btn-labeled btn-success m-b-5" id="save" onclick="SaveSales()">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-ok"></i></span>Yadda Saxla
+                                    </button>
+                                    <button type="button" class="btn btn-labeled btn-danger m-b-5" onclick="SaveSales()">
+                                        <span class="btn-label"><i class="glyphicon glyphicon-remove"></i></span>Ləğv et
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    @*</form>*@
+                </div>
+
+            </div>
+        </div>
+</div>
+    </section>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+<script src="~/js/SaleUpdate.js" asp-append-version="true"></script>
+
+
